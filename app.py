@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 from flask_socketio import SocketIO
 from deepgram import (
     DeepgramClient,
@@ -24,7 +24,7 @@ else:
     print("DEEPGRAM_API_KEY found in environment variables")
     print(f"API Key length: {len(api_key)} characters")
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 socketio = SocketIO(app, cors_allowed_origins="*", path='/socket.io')
 
 # Initialize Deepgram client
@@ -49,14 +49,25 @@ dg_connection = deepgram.agent.websocket.v("1")
 def index():
     return render_template('index.html')
 
+@app.route('/static/<path:path>')
+def serve_static(path):
+    return send_from_directory('static', path)
+
 @socketio.on('connect')
 def handle_connect():
+    print("Client connected")
+    # Don't initialize Deepgram here anymore
+    return
+
+@socketio.on('start_listening')
+def handle_start_listening():
+    print("Starting Deepgram connection...")
     options = SettingsOptions()
 
     # Configure audio input settings
     options.audio.input = Input(
         encoding="linear16",
-        sample_rate=16000  # Match the output sample rate
+        sample_rate=16000
     )
 
     # Configure audio output settings
@@ -107,7 +118,7 @@ def handle_connect():
     options.agent.listen.provider.type = "deepgram"
     
     # Configure language-specific settings
-    options.agent.listen.provider.language = "auto"  # Auto-detect language
+    options.agent.listen.provider.language = "auto"
     options.agent.listen.provider.model_config = {
         "language": "auto",
         "detect_language": True,
@@ -126,9 +137,9 @@ def handle_connect():
     options.agent.speak.provider.model = "aura-2"
     options.agent.speak.provider.voice_config = {
         "model": "aura-2",
-        "voice": "auto",  # Will be set dynamically based on language
-        "language": "auto",  # Will be set dynamically based on language
-        "style": "conversational"  # Makes the voice more natural for conversation
+        "voice": "auto",
+        "language": "auto",
+        "style": "conversational"
     }
 
     # Sets Agent greeting
@@ -242,12 +253,14 @@ def handle_connect():
     dg_connection.on(AgentWebSocketEvents.AgentStartedSpeaking, on_agent_started_speaking)
     dg_connection.on(AgentWebSocketEvents.Error, on_error)
 
-    print("Starting Deepgram connection...")
+    # Initialize Deepgram connection
     if not dg_connection.start(options):
         print("Failed to start Deepgram connection")
         socketio.emit('error', {'data': {'message': 'Failed to start connection'}})
-        return
+        return False
+    
     print("Deepgram connection started successfully")
+    return True
 
 @socketio.on('audio_data')
 def handle_audio_data(data):
