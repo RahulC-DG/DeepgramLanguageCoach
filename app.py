@@ -102,13 +102,72 @@ def handle_connect():
     )
 
     # Deepgram provider configuration
-    options.agent.listen.provider.keyterms = ["hello", "goodbye", "practice", "pronunciation", "fluency"]
+    options.agent.listen.provider.keyterms = ["hello", "goodbye", "practice", "pronunciation", "fluency", "language", "switch", "change"]
     options.agent.listen.provider.model = "nova-3"
     options.agent.listen.provider.type = "deepgram"
+    
+    # Configure language-specific settings
+    options.agent.listen.provider.language = "auto"  # Auto-detect language
+    options.agent.listen.provider.model_config = {
+        "language": "auto",
+        "detect_language": True,
+        "punctuate": True,
+        "diarize": False,
+        "smart_format": True,
+        "model": "nova-3",
+        "language_detection": {
+            "enabled": True,
+            "confidence_threshold": 0.7
+        }
+    }
+    
+    # Configure TTS with language-specific voices
     options.agent.speak.provider.type = "deepgram"
+    options.agent.speak.provider.model = "aura-2"
+    options.agent.speak.provider.voice_config = {
+        "model": "aura-2",
+        "voice": "auto",  # Will be set dynamically based on language
+        "language": "auto",  # Will be set dynamically based on language
+        "style": "conversational"  # Makes the voice more natural for conversation
+    }
 
     # Sets Agent greeting
-    options.agent.greeting = "Hello! I'm DeepgramCoach, your language learning partner. Which language would you like to practice today, and what topic interests you?"
+    options.agent.greeting = "Hello! I'm DeepgramCoach, your language learning partner. Which language would you like to practice today, and would you like to work on conversation practice or pronunciation practice?"
+
+    # Function to update voice based on language
+    def update_voice_for_language(language):
+        voice_mapping = {
+            "english": "en-US-Neural2-F",
+            "spanish": "es-ES-Neural2-A",
+            "french": "fr-FR-Neural2-A",
+            "german": "de-DE-Neural2-A",
+            "italian": "it-IT-Neural2-A",
+            "portuguese": "pt-BR-Neural2-A",
+            "japanese": "ja-JP-Neural2-A",
+            "korean": "ko-KR-Neural2-A",
+            "chinese": "cmn-CN-Neural2-A",
+            "russian": "ru-RU-Neural2-A",
+            "dutch": "nl-NL-Neural2-A",
+            "hindi": "hi-IN-Neural2-A",
+            "arabic": "ar-XA-Neural2-A"
+        }
+        
+        # Convert language to lowercase and get the voice
+        language_key = language.lower()
+        voice = voice_mapping.get(language_key, "en-US-Neural2-F")  # Default to English if language not found
+        
+        print(f"Switching to {language_key} voice: {voice}")
+        
+        # Update the voice configuration
+        options.agent.speak.provider.voice_config["voice"] = voice
+        options.agent.speak.provider.voice_config["language"] = language_key
+        
+        # Update the connection with new settings
+        try:
+            dg_connection.update_settings(options)
+            print(f"Successfully updated voice settings for {language_key}")
+        except Exception as e:
+            print(f"Error updating voice settings: {str(e)}")
 
     # Event handlers
     def on_open(self, open, **kwargs):
@@ -120,7 +179,31 @@ def handle_connect():
         socketio.emit('welcome', {'data': welcome.__dict__})
 
     def on_conversation_text(self, conversation_text, **kwargs):
-        print("Conversation event received:", conversation_text.__dict__)
+        print("\n=== DEBUG: Conversation Text Object ===")
+        print("Type:", conversation_text.type)
+        print("Role:", conversation_text.role)
+        print("Content:", conversation_text.content)
+        
+        try:
+            # Only process user messages
+            if conversation_text.role == 'user':
+                text = conversation_text.content.lower()
+                print(f"\nProcessing user message: {text}")
+                
+                # Check for explicit language selection
+                if any(phrase in text for phrase in ["i want to learn", "let's practice", "switch to", "change to", "i would like to practice"]):
+                    print("Found trigger phrase!")
+                    for language in ["english", "spanish", "french", "german", "italian", "portuguese", 
+                                   "japanese", "korean", "chinese", "russian", "dutch", "hindi", "arabic"]:
+                        if language in text:
+                            print(f"Found language: {language}")
+                            update_voice_for_language(language)
+                            break
+            
+        except Exception as e:
+            print(f"Error processing conversation text: {str(e)}")
+            print("Full conversation text object:", conversation_text.__dict__)
+        
         socketio.emit('conversation', {'data': conversation_text.__dict__})
 
     def on_agent_thinking(self, agent_thinking, **kwargs):
