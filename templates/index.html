@@ -19,21 +19,28 @@
                 <div class="visualizer">
                     <div class="wave"></div>
                 </div>
-                
-                <div class="mode-selector">
-                    <button class="mode-btn active" data-mode="conversation">Conversation Practice</button>
-                    <button class="mode-btn" data-mode="pronunciation">Pronunciation Practice</button>
+                <div class="practice-instructions">
+                    <div class="mode-instructions">
+                        <p class="instruction-text small">Try saying these phrases in your responses:</p>
+                        <p class="instruction-text small"><strong>"I want to practice conversation"</strong> or <strong>"Let's work on pronunciation"</strong></p>
+                        <div class="mode-selector">
+                            <button class="mode-btn active" data-mode="conversation">Conversation Practice</button>
+                            <button class="mode-btn" data-mode="pronunciation">Pronunciation Practice</button>
+                        </div>
+                    </div>
+                    <div class="language-instructions">
+                        <p class="instruction-text small">You can practice any of these languages:</p>
+                        <p class="instruction-text small"><strong>"I want to learn English/Spanish/French/German/Japanese/Chinese"</strong></p>
+                        <div class="language-selector">
+                            <button class="language-btn" data-lang="english">English</button>
+                            <button class="language-btn" data-lang="spanish">Spanish</button>
+                            <button class="language-btn" data-lang="french">French</button>
+                            <button class="language-btn" data-lang="german">German</button>
+                            <button class="language-btn" data-lang="japanese">Japanese</button>
+                            <button class="language-btn" data-lang="chinese">Chinese</button>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="language-selector">
-                    <button class="language-btn" data-lang="english">English</button>
-                    <button class="language-btn" data-lang="spanish">Spanish</button>
-                    <button class="language-btn" data-lang="french">French</button>
-                    <button class="language-btn" data-lang="german">German</button>
-                    <button class="language-btn" data-lang="japanese">Japanese</button>
-                    <button class="language-btn" data-lang="chinese">Chinese</button>
-                </div>
-
                 <div class="controls">
                     <button class="btn" id="startBtn">Start Speaking</button>
                     <button class="btn secondary" id="stopBtn" disabled>Stop</button>

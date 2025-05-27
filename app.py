@@ -209,8 +209,14 @@ def handle_start_listening():
                         if language in text:
                             print(f"Found language: {language}")
                             update_voice_for_language(language)
+                            socketio.emit('select_language', {'language': language})
                             break
-            
+                # Check for mode selection
+                if "conversation" in text:
+                    socketio.emit('select_mode', {'mode': 'conversation'})
+                elif "pronunciation" in text:
+                    socketio.emit('select_mode', {'mode': 'pronunciation'})
+        
         except Exception as e:
             print(f"Error processing conversation text: {str(e)}")
             print("Full conversation text object:", conversation_text.__dict__)

@@ -65,6 +65,33 @@ function initSocket() {
             }
         }
     });
+
+    // Listen for backend events to select language and mode
+    socket.on('select_language', (data) => {
+        const lang = data.language.toLowerCase();
+        languageBtns.forEach(btn => {
+            if (btn.dataset.lang === lang) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        selectedLanguage = lang;
+        updateStatus(`Selected language: ${selectedLanguage}`);
+    });
+
+    socket.on('select_mode', (data) => {
+        const mode = data.mode;
+        modeBtns.forEach(btn => {
+            if (btn.dataset.mode === mode) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        selectedMode = mode;
+        updateStatus(`Selected mode: ${selectedMode}`);
+    });
 }
 
 // Initialize audio context and streaming
