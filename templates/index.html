@@ -1,37 +1,75 @@
+<!--
+    DeepgramCoach - Main Application Template
+    
+    This HTML template provides the user interface for the DeepgramCoach language learning application.
+    It includes interactive elements for voice communication, language selection, and conversation display.
+    
+    Main Features:
+    - Responsive design with modern CSS styling
+    - Real-time voice interaction controls
+    - Language and mode selection interface
+    - Visual feedback for audio processing
+    - Conversation history display
+    
+    Dependencies:
+    - Socket.IO client library for WebSocket communication
+    - Google Fonts (Inter) for typography
+    - Custom CSS (style.css) for styling
+    - Custom JavaScript (app.js) for functionality
+    
+    Author: Deepgram
+    License: MIT
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DeepgramCoach - Your Language Learning Partner</title>
+    
+    <!-- External font from Google Fonts for modern typography -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS styling -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <!-- Main application container -->
     <div class="container">
+        <!-- Application header with title and description -->
         <div class="header">
             <h1>DeepgramCoach</h1>
             <p>Your AI Language Learning Partner</p>
         </div>
 
+        <!-- Main content area with two-column layout -->
         <div class="main-content">
+            <!-- Left column: Voice interface and controls -->
             <div class="voice-interface">
+                <!-- Visual feedback for audio processing -->
                 <div class="visualizer">
                     <div class="wave"></div>
                 </div>
+                
+                <!-- Practice instructions and controls -->
                 <div class="practice-instructions">
+                    <!-- Mode selection instructions and buttons -->
                     <div class="mode-instructions">
                         <p class="instruction-text small">Try saying these phrases in your responses:</p>
                         <p class="instruction-text small"><strong>"I want to practice conversation"</strong> or <strong>"Let's work on pronunciation"</strong></p>
                         <div class="mode-selector">
+                            <!-- Learning mode selection buttons -->
                             <button class="mode-btn active" data-mode="conversation">Conversation Practice</button>
                             <button class="mode-btn" data-mode="pronunciation">Pronunciation Practice</button>
                         </div>
                     </div>
+                    
+                    <!-- Language selection instructions and buttons -->
                     <div class="language-instructions">
                         <p class="instruction-text small">You can practice any of these languages:</p>
                         <p class="instruction-text small"><strong>"I want to learn English/Spanish/French/German/Japanese/Chinese"</strong></p>
                         <div class="language-selector">
+                            <!-- Language selection buttons for supported languages -->
                             <button class="language-btn" data-lang="english">English</button>
                             <button class="language-btn" data-lang="spanish">Spanish</button>
                             <button class="language-btn" data-lang="french">French</button>
@@ -41,17 +79,22 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Voice interaction control buttons -->
                 <div class="controls">
                     <button class="btn" id="startBtn">Start Speaking</button>
                     <button class="btn secondary" id="stopBtn" disabled>Stop</button>
                 </div>
 
+                <!-- Status display for current application state -->
                 <div class="status">
                     Click "Start Speaking" to begin your language practice
                 </div>
             </div>
 
+            <!-- Right column: Conversation display -->
             <div class="conversation">
+                <!-- Initial welcome message from the AI assistant -->
                 <div class="message assistant">
                     Hello! I'm DeepgramCoach, your language learning partner. Which language would you like to practice today?
                 </div>
@@ -59,7 +102,11 @@
         </div>
     </div>
 
+    <!-- External dependencies -->
+    <!-- Socket.IO client library for real-time WebSocket communication -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    
+    <!-- Custom JavaScript for application functionality -->
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>

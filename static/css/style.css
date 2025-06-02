@@ -1,27 +1,55 @@
+/**
+ * DeepgramCoach - Application Stylesheet
+ * 
+ * This CSS file provides styling for the DeepgramCoach language learning application.
+ * It implements a modern, responsive design with a focus on usability and accessibility.
+ * 
+ * Design System:
+ * - Color Palette: Professional blue/teal color scheme
+ * - Typography: Inter font family for modern, readable text
+ * - Layout: CSS Grid for responsive two-column layout
+ * - Animations: Smooth transitions and visual feedback
+ * - Responsive: Mobile-first approach with breakpoints
+ * 
+ * Main Components:
+ * - Header and branding
+ * - Voice interface controls
+ * - Language and mode selectors
+ * - Conversation display
+ * - Visual feedback elements
+ * 
+ * Author: Deepgram
+ * License: MIT
+ */
+
+/* CSS Custom Properties (CSS Variables) for consistent theming */
 :root {
-    --primary-color: #4A90E2;
-    --secondary-color: #50E3C2;
-    --background-color: #F5F7FA;
-    --text-color: #2C3E50;
+    --primary-color: #4A90E2;    /* Primary blue color for buttons and accents */
+    --secondary-color: #50E3C2;  /* Secondary teal color for highlights */
+    --background-color: #F5F7FA;  /* Light gray background color */
+    --text-color: #2C3E50;       /* Dark gray text color for readability */
 }
 
+/* Global base styles */
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif;  /* Modern, readable font */
     margin: 0;
     padding: 0;
     background-color: var(--background-color);
     color: var(--text-color);
 }
 
+/* Main container with centered layout and padding */
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
+    max-width: 1200px;  /* Maximum width for large screens */
+    margin: 0 auto;     /* Center the container */
+    padding: 2rem;      /* Add spacing around content */
 }
 
+/* Header styling with centered text */
 .header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 3rem;  /* Space below header */
 }
 
 .header h1 {
@@ -33,23 +61,26 @@ body {
 .header p {
     font-size: 1.2rem;
     color: var(--text-color);
-    opacity: 0.8;
+    opacity: 0.8;  /* Slightly transparent for subtle effect */
 }
 
+/* Main content layout using CSS Grid for responsive design */
 .main-content {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    align-items: start;
+    grid-template-columns: 1fr 1fr;  /* Equal width columns */
+    gap: 2rem;                       /* Space between columns */
+    align-items: start;              /* Align items to top */
 }
 
+/* Voice interface card styling */
 .voice-interface {
     background: white;
-    border-radius: 20px;
+    border-radius: 20px;  /* Rounded corners for modern look */
     padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Subtle shadow for depth */
 }
 
+/* Audio visualizer styling with animated wave effect */
 .visualizer {
     width: 100%;
     height: 100px;
@@ -57,9 +88,10 @@ body {
     border-radius: 10px;
     margin-bottom: 1rem;
     position: relative;
-    overflow: hidden;
+    overflow: hidden;  /* Hide overflow for animation */
 }
 
+/* Animated wave element for visual feedback */
 .wave {
     position: absolute;
     width: 100%;
@@ -67,21 +99,24 @@ body {
     background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
     opacity: 0.3;
     transform-origin: 50% 50%;
-    animation: wave 2s infinite linear;
+    animation: wave 2s infinite linear;  /* Continuous wave animation */
 }
 
+/* Wave animation keyframes */
 @keyframes wave {
-    0% { transform: scaleY(0.5); }
-    50% { transform: scaleY(1); }
-    100% { transform: scaleY(0.5); }
+    0% { transform: scaleY(0.5); }   /* Start small */
+    50% { transform: scaleY(1); }    /* Grow to full size */
+    100% { transform: scaleY(0.5); } /* Shrink back */
 }
 
+/* Control button container */
 .controls {
     display: flex;
-    gap: 1rem;
+    gap: 1rem;          /* Space between buttons */
     margin-bottom: 1rem;
 }
 
+/* Primary button styling */
 .btn {
     padding: 1rem 2rem;
     border: none;
@@ -90,93 +125,102 @@ body {
     color: white;
     font-size: 1rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease;  /* Smooth transitions for interactions */
 }
 
+/* Button hover effect */
 .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+    transform: translateY(-2px);  /* Slight lift effect */
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);  /* Enhanced shadow */
 }
 
+/* Disabled button state */
 .btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    transform: none;
+    transform: none;  /* Remove hover effects when disabled */
 }
 
+/* Secondary button variant */
 .btn.secondary {
     background: var(--secondary-color);
 }
 
+/* Conversation display area */
 .conversation {
     background: white;
     border-radius: 20px;
     padding: 2rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    height: 400px;
-    overflow-y: auto;
+    height: 400px;     /* Fixed height for scrollable area */
+    overflow-y: auto;  /* Vertical scrolling for long conversations */
 }
 
+/* Individual message styling */
 .message {
     margin-bottom: 1rem;
     padding: 1rem;
     border-radius: 10px;
-    max-width: 80%;
+    max-width: 80%;  /* Prevent messages from being too wide */
 }
 
+/* User message styling (aligned right) */
 .message.user {
     background: var(--primary-color);
     color: white;
-    margin-left: auto;
+    margin-left: auto;  /* Align to right side */
 }
 
+/* Assistant message styling (aligned left) */
 .message.assistant {
     background: #f0f0f0;
-    margin-right: auto;
+    margin-right: auto;  /* Align to left side */
 }
 
+/* Language selector container */
 .language-selector {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap;  /* Allow wrapping on smaller screens */
     gap: 0.5rem;
     margin-bottom: 1rem;
 }
 
+/* Language selection button styling */
 .language-btn {
     padding: 0.5rem 1rem;
     border: 2px solid var(--primary-color);
-    border-radius: 20px;
+    border-radius: 20px;  /* Pill-shaped buttons */
     background: transparent;
     color: var(--primary-color);
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.language-btn:hover {
-    background: var(--primary-color);
-    color: white;
-}
-
+/* Language button hover and active states */
+.language-btn:hover,
 .language-btn.active {
     background: var(--primary-color);
     color: white;
 }
 
+/* Status message styling */
 .status {
     text-align: center;
     margin-top: 1rem;
     font-size: 0.9rem;
-    color: #666;
+    color: #666;  /* Muted color for status text */
 }
 
+/* Mode selector container */
 .mode-selector {
     display: flex;
     gap: 1rem;
     margin-bottom: 1rem;
 }
 
+/* Mode selection button styling */
 .mode-btn {
-    flex: 1;
+    flex: 1;  /* Equal width for mode buttons */
     padding: 1rem;
     border: 2px solid var(--primary-color);
     border-radius: 10px;
@@ -186,51 +230,70 @@ body {
     transition: all 0.3s ease;
 }
 
+/* Active mode button styling */
 .mode-btn.active {
     background: var(--primary-color);
     color: white;
 }
 
+/* Practice instructions container */
 .practice-instructions {
     margin-bottom: 1.5rem;
 }
-.mode-instructions, .language-instructions {
+
+/* Mode and language instruction sections */
+.mode-instructions, 
+.language-instructions {
     margin-bottom: 1.2rem;
 }
+
+/* Instruction text styling */
 .instruction-text {
-    color: #555;
-    margin: 0.2rem 0 0.4rem 0;
-    line-height: 1.3;
+    color: #555;                    /* Muted text color */
+    margin: 0.2rem 0 0.4rem 0;     /* Minimal vertical spacing */
+    line-height: 1.3;              /* Improved readability */
 }
+
+/* Smaller instruction text variant */
 .instruction-text.small {
     font-size: 0.92rem;
-    opacity: 0.85;
+    opacity: 0.85;  /* Slightly transparent for hierarchy */
 }
+
+/* Mode instructions layout */
 .mode-instructions {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     margin-bottom: 1.2rem;
 }
+
+/* Language instructions layout */
 .language-instructions {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
-.mode-selector, .language-selector {
-    margin-top: 0.3rem;
+
+/* Selector spacing adjustment */
+.mode-selector, 
+.language-selector {
+    margin-top: 0.3rem;  /* Small gap between instructions and buttons */
 }
 
-/* Responsive Design */
+/* Responsive Design for Mobile Devices */
 @media (max-width: 768px) {
+    /* Stack columns vertically on mobile */
     .main-content {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr;  /* Single column layout */
     }
     
+    /* Reduce container padding on mobile */
     .container {
         padding: 1rem;
     }
     
+    /* Smaller header text on mobile */
     .header h1 {
         font-size: 2rem;
     }
